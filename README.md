@@ -5,32 +5,31 @@
 
 # 文件目录结构
 
-`build/` 用于构建代码的目录 - 类似于可执行文件的存放地。
-`lib/` 包含了gtest-1.6.0库。
-
-根目录下的其他代码：
-
+- `build/` 用于构建代码的目录 - 类似于可执行文件的存放地。
+- `lib/` 包含了gtest-1.6.0库。
 - `CMakeLists.txt` 必须在项目的每个子目录中都存在。
-- `main.cpp` 是入口文件 - 通常用于运行常规应用程序。
-- `project1.cpp` 和 `project1.h` 包含类'Project1'的代码。
-- `test_project1.cpp` 包含测试Project1的代码。
+- `src`
+  - `main.cpp` 是入口文件 - 通常用于运行常规应用程序。
+  - `myfoo.cpp` 和 `myfoo.h` 包含类 `MyFoo` 的代码。
+- `test`
+  - `test_MyFoo.cpp` 包含测试代码。
 
 # 怎么做？
 
-## 使用 CMake 和 Make 构建可执行文件
+## 如何构建可执行文件
 
 在项目根目录执行下面的命令：
 
 ```bash
-rm -rf build && mkdir build && cd build &&cmake .. && make &&  ./project1
+rm -rf build && mkdir build && cd build &&cmake .. && make &&  ./myfoo
 ```
 
 上面的命令
 
 - 首先创建了一个新的 build 子目录，
 - 然后通过 `cmake ..` 创建 Makefiles
-- 再通过 `make` 进行编译与所有链接工作，生成可执行文件 `./project1`
-- 最后 在 `build` 子目录下运行可执行文件 `./project1`
+- 再通过 `make` 进行编译与所有链接工作，生成可执行文件 `./myfoo`
+- 最后 在 `build` 子目录下运行可执行文件 `./myfoo`
 
 
 ## 如何构建并执行测试用例
@@ -49,6 +48,8 @@ rm -rf build && mkdir build && cd build &&cmake -Dtest=ON .. && make &&  ./runUn
 - 然后通过 `cmake ..` 创建 Makefiles
 - 再通过 `make` 进行编译与所有链接工作，生成可执行文件 `./runUnitTests`
 - 最后 在 `build` 子目录下运行可执行文件 `./runUnitTests`
+
+
 
 
 # 详情

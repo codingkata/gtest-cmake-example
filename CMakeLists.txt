@@ -77,3 +77,15 @@ if (test)
   # test executable.
   add_test(that-other-test-I-made runUnitTests)
 endif()
+
+
+################
+# Test Coverage
+################
+
+if (ENABLE_COVERAGE)
+    message(STATUS "Code coverage is enabled.")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
+endif ()
+
