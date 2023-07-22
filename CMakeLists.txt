@@ -31,8 +31,8 @@ endif()
 ################################
 # Normal Libraries & Executables
 ################################
-add_library(myfoo_lib myfoo.cpp)
-add_executable(myfoo main.cpp)
+add_library(myfoo_lib src/myfoo.cpp)
+add_executable(myfoo src/main.cpp)
 # Key idea: SEPARATE OUT your main() function into its own file so it can be its
 # own executable. Separating out main() means you can add this library to be
 # used elsewhere.
@@ -60,12 +60,13 @@ if (test)
   ##############
   # Unit Tests
   ##############
-  add_executable(runUnitTests test_MyFoo.cpp)
+  add_executable(runUnitTests test/test_MyFoo.cpp)
 
   # 将 gtest 和 gtest_main 链接到 runUnitTests
   target_link_libraries(runUnitTests gtest gtest_main)
 
   # 再将 Extra linking for the project.
+  target_include_directories(runUnitTests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
   target_link_libraries(runUnitTests myfoo_lib)
 
   # This is so you can do 'make test' to see all your tests run, instead of
