@@ -1,7 +1,7 @@
 #include <iostream>
 #include "gtest/gtest.h"
 
-#include "project1.h"
+#include "myfoo.h"
 
 
 // IndependentMethod is a test case - here, we have 2 tests for this 1 test case
@@ -22,16 +22,16 @@ TEST(IndependentMethod, ResetsToZero2) {
 }
 
 // The fixture for testing class Project1. From google test primer.
-class Project1Test : public ::testing::Test {
+class MyFooTest : public ::testing::Test {
 protected:
 	// You can remove any or all of the following functions if its body
 	// is empty.
 
-	Project1Test() {
+	MyFooTest() {
 		// You can do set-up work for each test here.
 	}
 
-	virtual ~Project1Test() {
+	virtual ~MyFooTest() {
 		// You can do clean-up work that doesn't throw exceptions here.
 	}
 
@@ -48,12 +48,12 @@ protected:
 	}
 
 	// Objects declared here can be used by all tests in the test case for Project1.
-	Project1 p;
+	MyFoo p;
 };
 
 // Test case must be called the class above
 // Also note: use TEST_F instead of TEST to access the test fixture (from google test primer)
-TEST_F(Project1Test, MethodBarDoesAbc) {
+TEST_F(MyFooTest, MethodBarDoesAbc) {
 	int i = 0;
 	p.foo(i); // we have access to p, declared in the fixture
 	EXPECT_EQ(1, i);

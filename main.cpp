@@ -1,5 +1,5 @@
 #include <iostream>
-#include "project1.h"
+#include "myfoo.h"
 
 using namespace std;
 
@@ -9,7 +9,7 @@ int main() {
 	cout << x << endl;
 	independentMethod(x);
 	cout << x << endl;
-	Project1 p;
+	MyFoo p;
 	p.foo(x);
 	cout << x << endl;
 }

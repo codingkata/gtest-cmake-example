@@ -1,6 +1,6 @@
-#include "project1.h"
+#include "myfoo.h"
 
-void Project1::foo(int &i) {
+void MyFoo::foo(int &i) {
 	i = 1;
 }
 
