@@ -9,6 +9,18 @@ project(${PROJECT_NAME})
 
 set(CMAKE_CXX_FLAGS "-g -Wall")
 
+# Add code coverage flags
+option(ENABLE_COVERAGE "Enable code coverage" OFF)
+################
+# Test Coverage
+################
+
+if (ENABLE_COVERAGE)
+    message(STATUS "Code coverage is enabled.")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
+endif ()
+
 # force static runtime libraries for msvc builds
 if(MSVC)
   set(variables 
@@ -79,13 +91,5 @@ if (test)
 endif()
 
 
-################
-# Test Coverage
-################
 
-if (ENABLE_COVERAGE)
-    message(STATUS "Code coverage is enabled.")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
-endif ()
 

@@ -49,7 +49,24 @@ rm -rf build && mkdir build && cd build &&cmake -Dtest=ON .. && make &&  ./runUn
 - 再通过 `make` 进行编译与所有链接工作，生成可执行文件 `./runUnitTests`
 - 最后 在 `build` 子目录下运行可执行文件 `./runUnitTests`
 
+## 如何生成测试覆盖率
 
+要准备所有测试，请运行以下命令：
+
+```bash
+
+rm -rf build && mkdir build && cd build &&cmake -Dtest=ON -DENABLE_COVERAGE=ON .. && make &&  ./runUnitTests
+lcov --capture --no-external --demangle-cpp --directory ./CMakeFiles/myfoo_lib.dir/src/ --base-directory ../src   --output-file coverage_base.info
+lcov --summary coverage_base.info
+genhtml coverage_base.info --output-directory coverage --quiet
+```
+
+上面的命令：
+
+- 第一行命令：打开 Coverage 开关，并运行测试执行文件，从而生成 .gcno 和 .gcda 文件。
+- 第二行命令：通过参数 `--directory ./CMakeFiles/myfoo_lib.dir/src/` 指定需要统计其覆盖率的文件目录，将所有 .gcno 和 .gcda 文件中的信息抽取出来，并生成结果文件 `coverage_base.info`
+- 第三行命令：总结并打印出覆盖率的结果
+- 第四行命令：创建目录 `coverage` ，并使用 `coverage_base.info` 的信息在 `coverage` 目录下生成 HTML 报告文件。
 
 
 # 详情
