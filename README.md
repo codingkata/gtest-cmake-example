@@ -51,23 +51,26 @@ rm -rf build && mkdir build && cd build &&cmake -Dtest=ON .. && make &&  ./runUn
 
 ## 如何生成测试覆盖率
 
+[关于 lcov 的使用方式，可以参考这里。](https://wiki.documentfoundation.org/Development/Lcov#Combine_lcov_tracefiles)
+
 要准备所有测试，请运行以下命令：
 
 ```bash
 
-rm -rf build && mkdir build && cd build &&cmake -Dtest=ON -DENABLE_COVERAGE=ON .. && make &&  ./runUnitTests
-lcov --capture --no-external --demangle-cpp --directory ./CMakeFiles/myfoo_lib.dir/src/ --base-directory ../src   --output-file coverage_base.info
-lcov --summary coverage_base.info
-genhtml coverage_base.info --output-directory coverage --quiet
+rm -rf build && mkdir build && cd build &&cmake -Dtest=ON -DENABLE_COVERAGE=ON .. && make
+# 在运行任何测试之前，创建 lcov 基线，输出是一个覆盖率数据文件 /tmp/coverage_base.info ，其中包含项目中每个被仪器化的行的零覆盖率。在后续阶段，你将把这个数据文件与测试运行后捕获的覆盖率数据文件合并。这样，总覆盖的代码行的百分比将始终是正确的，即使在测试期间没有加载所有源代码文件。
+lcov --capture --no-external --initial --demangle-cpp --directory ./CMakeFiles/myfoo_lib.dir/src/ --base-directory ../src --output-file /tmp/coverage_base.info
+# 运行测试
+./runUnitTests
+# 再次收集测试覆盖率
+lcov --capture --no-external --demangle-cpp --directory ./CMakeFiles/myfoo_lib.dir/src/ --base-directory ../src   --output-file /tmp/coverage_test.info
+# 将前后两次生成的覆盖率文件合并在一起，生成最后的覆盖率数据文件。
+lcov --add-tracefile /tmp/coverage_base.info --add-tracefile /tmp/coverage_test.info --ignore-errors empty --output-file coverage_total.info
+# 总结并打印出测试结果。
+lcov --summary coverage_total.info
+# 生成 HTML 格式的测试覆盖率报告
+genhtml --prefix ../src --ignore-errors source coverage_total.info --legend  --output-directory coverage --quiet
 ```
-
-上面的命令：
-
-- 第一行命令：打开 Coverage 开关，并运行测试执行文件，从而生成 .gcno 和 .gcda 文件。
-- 第二行命令：通过参数 `--directory ./CMakeFiles/myfoo_lib.dir/src/` 指定需要统计其覆盖率的文件目录，将所有 .gcno 和 .gcda 文件中的信息抽取出来，并生成结果文件 `coverage_base.info`
-- 第三行命令：总结并打印出覆盖率的结果
-- 第四行命令：创建目录 `coverage` ，并使用 `coverage_base.info` 的信息在 `coverage` 目录下生成 HTML 报告文件。
-
 
 # 详情
 
