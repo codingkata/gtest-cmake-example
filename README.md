@@ -55,20 +55,55 @@ rm -rf build && mkdir build && cd build &&cmake -Dtest=ON .. && make &&  ./runUn
 
 要准备所有测试，请运行以下命令：
 
+
+#### 1. 编译出有覆盖率桩的二进制测试文件
+
 ```bash
 
 rm -rf build && mkdir build && cd build &&cmake -Dtest=ON -DENABLE_COVERAGE=ON .. && make
-# 在运行任何测试之前，创建 lcov 基线，输出是一个覆盖率数据文件 /tmp/coverage_base.info ，其中包含项目中每个被仪器化的行的零覆盖率。在后续阶段，你将把这个数据文件与测试运行后捕获的覆盖率数据文件合并。这样，总覆盖的代码行的百分比将始终是正确的，即使在测试期间没有加载所有源代码文件。
+```
+
+#### 2. 生成 lcov 基线
+
+在运行任何测试之前，创建 lcov 基线，输出是一个覆盖率数据文件 /tmp/coverage_base.info ，其中包含项目中每个被仪器化的行的零覆盖率。在后续阶段，你将把这个数据文件与测试运行后捕获的覆盖率数据文件合并。这样，总覆盖的代码行的百分比将始终是正确的，即使在测试期间没有加载所有源代码文件。
+
+
+
+```bash
 lcov --capture --no-external --initial --demangle-cpp --directory ./CMakeFiles/myfoo_lib.dir/src/ --base-directory ../src --output-file /tmp/coverage_base.info
-# 运行测试
+```
+
+#### 3. 运行测试
+
+```
 ./runUnitTests
-# 再次收集测试覆盖率
+
+```
+
+#### 4. 再次收集测试覆盖率
+
+```
 lcov --capture --no-external --demangle-cpp --directory ./CMakeFiles/myfoo_lib.dir/src/ --base-directory ../src   --output-file /tmp/coverage_test.info
-# 将前后两次生成的覆盖率文件合并在一起，生成最后的覆盖率数据文件。
+```
+
+#### 5. 将两次的内容合并
+
+将前后两次生成的覆盖率文件合并在一起，生成最后的覆盖率数据文件。
+
+```
 lcov --add-tracefile /tmp/coverage_base.info --add-tracefile /tmp/coverage_test.info --ignore-errors empty --output-file coverage_total.info
-# 总结并打印出测试结果。
+
+```
+
+#### 6. 总结并打印出测试结果 coverage_total.info
+
+```
 lcov --summary coverage_total.info
-# 生成 HTML 格式的测试覆盖率报告
+```
+
+#### 7. 生成 HTML 格式的测试覆盖率报告
+
+```
 genhtml --prefix ../src --ignore-errors source coverage_total.info --legend  --output-directory coverage --quiet
 ```
 
