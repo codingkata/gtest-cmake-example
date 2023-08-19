@@ -8,3 +8,7 @@ void MyFoo::foo(int &i) {
 void independentMethod(int &i) {
 	i = 0;
 }
+
+int add(int a,int b) {
+   return a +b;
+}
